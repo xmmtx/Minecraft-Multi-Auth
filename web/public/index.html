@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMA | Minecraft Multi Authentication</title>
+    <link rel="icon" href="https://lsky.xm233.cn/i/admin/2026/04/Favicon-69e3a1d7b484a.ico" type="image/x-icon">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', }
+    </script>
+    <style>
+        body {
+            background-color: #1e293b;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.8s ease;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 transition-colors duration-500">
+
+    <div id="cookie-banner" class="fixed bottom-0 left-0 w-full p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-black/10 dark:border-white/10 hidden z-50 transition-transform duration-500 translate-y-full">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-slate-700 dark:text-slate-300 text-sm" data-i18n="cookie_text">本站使用 Cookie 提升您的访问体验。继续使用即表示您同意我们的隐私政策。</p>
+            <button onclick="acceptCookies()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-2 rounded-lg font-bold text-sm transition" data-i18n="cookie_btn">接受</button>
+        </div>
+    </div>
+
+    <div class="glass-card max-w-2xl w-full p-8 rounded-3xl shadow-2xl mt-auto">
+        <div class="flex justify-end gap-2 mb-6">
+            <div class="flex bg-black/10 dark:bg-white/10 rounded-lg p-1">
+                <button onclick="setTheme('light')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">☀️</button>
+                <button onclick="setTheme('dark')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">🌙</button>
+                <button onclick="setTheme('system')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">🖥️</button>
+            </div>
+            <div class="flex bg-black/10 dark:bg-white/10 rounded-lg p-1">
+                <button onclick="setLang('zh')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">简</button>
+                <button onclick="setLang('tw')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">繁</button>
+                <button onclick="setLang('en')" class="px-2 py-1 text-xs rounded hover:bg-white/50 dark:hover:bg-black/20">EN</button>
+            </div>
+        </div>
+
+        <h1 data-i18n="title" class="text-3xl font-bold mb-4 text-center text-cyan-700 dark:text-cyan-400">XMA | Minecraft Multi Authentication</h1>
+        <p data-i18n="subtitle" class="text-slate-600 dark:text-slate-300 text-center mb-8">Minecraft 正版/离线统一身份验证中心</p>
+
+        <div class="overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 mb-8 bg-black/5 dark:bg-black/20">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-black/10 dark:bg-white/10">
+                    <tr>
+                        <th data-i18n="table_feat" class="p-3">功能特性</th>
+                        <th data-i18n="table_desc" class="p-3">说明</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-700 dark:text-slate-300">
+                    <tr class="border-b border-black/5 dark:border-white/5">
+                        <td class="p-3 font-semibold text-cyan-700 dark:text-cyan-300" data-i18n="row1_t">官方微软验证</td>
+                        <td class="p-3" data-i18n="row1_d">最高优先级，支持正版账号快速登录</td>
+                    </tr>
+                    <tr class="border-b border-black/5 dark:border-white/5">
+                        <td class="p-3 font-semibold text-cyan-700 dark:text-cyan-300" data-i18n="row2_t">LittleSkin 外置登录</td>
+                        <td class="p-3" data-i18n="row2_d">完美兼容，支持个性化皮肤与 Mod 材质</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-semibold text-cyan-700 dark:text-cyan-300" data-i18n="row3_t">API 兼容性</td>
+                        <td class="p-3" data-i18n="row3_d">完全遵循 Yggdrasil 协议，适配主流启动器</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <button onclick="copyToClipboard()" class="bg-cyan-600/90 hover:bg-cyan-500 text-white font-bold py-3 px-4 rounded-xl transition duration-200 border border-white/10" data-i18n="btn_copy">复制 API 地址</button>
+            <a href="https://mcauth.xm233.cn/api/yggdrasil" class="bg-slate-700/90 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl text-center transition duration-200 cursor-grab active:cursor-grabbing border border-white/10" data-i18n="btn_drag">拖动该卡片至启动器</a>
+            <a href="https://mcauth.xm233.cn/manage" class="bg-indigo-700/90 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl text-center transition duration-200 border border-white/10" data-i18n="btn_manage">管理面板</a>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <a href="https://github.com/wifi-left/MC-MultiLogin-service" target="_blank" class="bg-slate-500/20 hover:bg-slate-500/30 text-slate-700 dark:text-slate-300 font-bold py-3 px-4 rounded-xl text-center transition duration-200 border border-white/10" data-i18n="btn_github">查看 GitHub 源码</a>
+            <button onclick="toggleWallpaper()" class="bg-slate-500/20 hover:bg-slate-500/30 text-slate-700 dark:text-slate-300 font-bold py-3 px-4 rounded-xl transition duration-200 border border-white/10" data-i18n="btn_wallpaper">切换壁纸风格</button>
+        </div>
+        
+        <p id="copy-status" class="text-center text-green-700 dark:text-green-300 mt-4 h-6 opacity-0 transition-opacity font-medium" data-i18n="msg_copied">已复制到剪贴板！</p>
+    </div>
+
+    <footer class="mt-8 mb-6 text-center">
+    <div class="inline-block px-4 py-1.5 rounded-full bg-white/10 dark:bg-black/10 backdrop-blur-md border border-white/20 dark:border-white/5 hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300">
+        <a href="https://beian.miit.gov.cn/" target="_blank" class="text-white dark:text-slate-300 text-xs font-medium hover:text-cyan-200 dark:hover:text-cyan-400 transition drop-shadow-md">
+            浙ICP备2024075519号-1
+        </a>
+    </div>
+    </footer>
+
+    <script>
+        const translations = {
+            zh: { page_title: "XMA | Minecraft 统一身份验证", title: "XMA | Minecraft 统一身份验证", subtitle: "Minecraft 正版/离线统一身份验证中心", table_feat: "功能特性", table_desc: "说明", row1_t: "官方微软验证", row1_d: "最高优先级，支持正版账号快速登录", row2_t: "LittleSkin 外置登录", row2_d: "完美兼容，支持个性化皮肤与 Mod 材质", row3_t: "API 兼容性", row3_d: "完全遵循 Yggdrasil 协议，适配主流启动器", btn_copy: "复制 API 地址", btn_drag: "拖动该卡片至启动器", btn_manage: "管理面板", btn_github: "GitHub 开源仓库", btn_wallpaper: "切换壁纸风格", msg_copied: "已复制到剪贴板！", cookie_text: "本站使用 Cookie 提升您的访问体验。继续使用即表示您同意我们的隐私政策。", cookie_btn: "接受" },
+            tw: { page_title: "XMA | Minecraft 統一身份驗證", title: "XMA | Minecraft 統一身份驗證", subtitle: "Minecraft 正版/離線統一身份驗證中心", table_feat: "功能特性", table_desc: "說明", row1_t: "官方微軟驗證", row1_d: "最高優先級，支持正版賬號快速登錄", row2_t: "LittleSkin 外置登錄", row2_d: "完美兼容，支持個性化皮膚與 Mod 材質", row3_t: "API 兼容性", row3_d: "完全遵循 Yggdrasil 協議，適配主流啟動器", btn_copy: "複製 API 地址", btn_drag: "拖動該卡片至啟動器", btn_manage: "管理面板", btn_github: "GitHub 開源倉庫", btn_wallpaper: "切換壁紙風格", msg_copied: "已複製到剪貼板！", cookie_text: "本站使用 Cookie 提升您的訪問體驗。繼續使用即表示您同意我們的隱私政策。", cookie_btn: "接受" },
+            en: { page_title: "XMA | Minecraft Multi Auth", title: "XMA | Minecraft Multi Auth", subtitle: "Minecraft Official/Offline Unified Auth Center", table_feat: "Features", table_desc: "Description", row1_t: "Microsoft Auth", row1_d: "Highest priority, supports fast login for official accounts", row2_t: "LittleSkin Login", row2_d: "Perfect compatibility for skins and mods", row3_t: "API Compatibility", row3_d: "Fully Yggdrasil compliant, works with major launchers", btn_copy: "Copy API URL", btn_drag: "Drag card to launcher", btn_manage: "Manage Panel", btn_github: "GitHub Source", btn_wallpaper: "Switch Wallpaper", msg_copied: "Copied to clipboard!", cookie_text: "This site uses cookies to enhance your experience. By continuing, you agree to our privacy policy.", cookie_btn: "Accept" }
+        };
+
+        const bgUrls = { bing: 'https://api.dujin.org/bing/1920.php', anime: 'https://www.loliapi.com/acg' };
+
+        function setLang(lang) {
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang;
+            document.title = translations[lang]['page_title'];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerText = translations[lang][key];
+            });
+        }
+
+        function setTheme(theme) {
+            localStorage.setItem('theme', theme);
+            if (theme === 'dark') document.documentElement.classList.add('dark');
+            else if (theme === 'light') document.documentElement.classList.remove('dark');
+            else { 
+                localStorage.removeItem('theme');
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleWallpaper() {
+            let current = localStorage.getItem('bgType') || 'bing';
+            let next = (current === 'bing') ? 'anime' : 'bing';
+            localStorage.setItem('bgType', next);
+            applyWallpaper(next);
+        }
+
+        function applyWallpaper(type) {
+            document.body.style.backgroundImage = `url('${bgUrls[type]}')`;
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookie_accepted', 'true');
+            document.getElementById('cookie-banner').classList.add('translate-y-full');
+            setTimeout(() => document.getElementById('cookie-banner').classList.add('hidden'), 500);
+        }
+
+        function init() {
+            let lang = localStorage.getItem('lang');
+            if (!lang) {
+                const browserLang = navigator.language || 'zh';
+                if (browserLang.startsWith('zh-TW') || browserLang.startsWith('zh-HK')) lang = 'tw';
+                else if (browserLang.startsWith('zh')) lang = 'zh';
+                else lang = 'en';
+            }
+            setLang(lang);
+            
+            const savedTheme = localStorage.getItem('theme') || 'system';
+            setTheme(savedTheme);
+            
+            const savedBg = localStorage.getItem('bgType') || 'bing';
+            applyWallpaper(savedBg);
+
+            if (!localStorage.getItem('cookie_accepted')) {
+                const banner = document.getElementById('cookie-banner');
+                banner.classList.remove('hidden');
+                setTimeout(() => banner.classList.remove('translate-y-full'), 100);
+            }
+        }
+
+        function copyToClipboard() {
+            const url = "https://mcauth.xm233.cn/api/yggdrasil";
+            navigator.clipboard.writeText(url).then(() => {
+                const status = document.getElementById('copy-status');
+                status.style.opacity = '1';
+                setTimeout(() => status.style.opacity = '0', 2000);
+            }).catch(err => {
+                console.error('复制失败: ', err);
+                alert('复制失败，请尝试手动复制。');
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
